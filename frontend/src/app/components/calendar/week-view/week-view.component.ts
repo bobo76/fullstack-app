@@ -6,6 +6,8 @@ import { AppointmentCardComponent } from '../appointment-card/appointment-card.c
 import { Appointment } from '../../../models/appointment.model';
 import { Instant } from '../../../models/instant.type';
 import { AppointmentService } from '../../../services/appointment.service';
+import { toInstant } from '../../../utils/date.utils';
+import { devError } from '../../../utils/environment.utils';
 
 @Component({
   selector: 'app-week-view',
@@ -72,12 +74,6 @@ export class WeekViewComponent {
     };
   }
 
-  private toInstant(date: Date): Instant {
-    // Format Date to ISO 8601 UTC timestamp (Instant)
-    // Output format: "2025-11-13T18:35:00Z"
-    return date.toISOString().split('.')[0] + 'Z';
-  }
-
   onTimeSlotClick(day: Date, hour: number): void {
     const slotDate = new Date(day);
     slotDate.setHours(hour, 0, 0, 0);
@@ -105,11 +101,11 @@ export class WeekViewComponent {
 
     if (appointment.id) {
       this.appointmentService.update(appointment.id, {
-        startTime: this.toInstant(newStartTime),
-        endTime: this.toInstant(newEndTime)
+        startTime: toInstant(newStartTime),
+        endTime: toInstant(newEndTime)
       }).subscribe({
         error: (error) => {
-          console.error('Error updating appointment:', error);
+          devError('Error updating appointment:', error);
           this.snackBar.open('Failed to move appointment', 'Dismiss', { duration: 3000 });
         }
       });
@@ -119,10 +115,10 @@ export class WeekViewComponent {
   onAppointmentResize(event: { appointment: Appointment; newEndTime: Date }): void {
     if (event.appointment.id) {
       this.appointmentService.update(event.appointment.id, {
-        endTime: this.toInstant(event.newEndTime)
+        endTime: toInstant(event.newEndTime)
       }).subscribe({
         error: (error) => {
-          console.error('Error resizing appointment:', error);
+          devError('Error resizing appointment:', error);
           this.snackBar.open('Failed to resize appointment', 'Dismiss', { duration: 3000 });
         }
       });

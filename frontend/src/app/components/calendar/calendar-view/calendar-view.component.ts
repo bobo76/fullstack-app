@@ -15,6 +15,7 @@ import { WebSocketService } from '../../../services/websocket.service';
 import { ReminderService } from '../../../services/reminder.service';
 import { Appointment } from '../../../models/appointment.model';
 import { AppointmentType } from '../../../models/appointment-type.model';
+import { toInstant } from '../../../utils/date.utils';
 
 type ViewMode = 'week' | 'day';
 
@@ -113,8 +114,8 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
 
     const newAppointment: Appointment = {
       title: '',
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
+      startTime: toInstant(startTime),
+      endTime: toInstant(endTime),
       reminderMinutes: 15
     };
 
@@ -139,7 +140,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
     this.drawerOpen.set(false);
     this.selectedAppointment.set(null);
     this.isNewAppointment.set(false);
-    this.loadAppointments();
+    // WebSocket will update the appointments automatically, no need to reload
   }
 
   getCurrentPeriodLabel(): string {

@@ -7,6 +7,7 @@ import { AppointmentCardComponent } from '../appointment-card/appointment-card.c
 import { Appointment } from '../../../models/appointment.model';
 import { Instant } from '../../../models/instant.type';
 import { AppointmentService } from '../../../services/appointment.service';
+import { devError } from '../../../utils/environment.utils';
 
 @Component({
   selector: 'app-day-view',
@@ -82,7 +83,7 @@ export class DayViewComponent {
         endTime: this.toInstant(newEndTime)
       }).subscribe({
         error: (error) => {
-          console.error('Error updating appointment:', error);
+          devError('Error updating appointment:', error);
           this.snackBar.open('Failed to move appointment', 'Dismiss', { duration: 3000 });
         }
       });
@@ -95,7 +96,7 @@ export class DayViewComponent {
         endTime: this.toInstant(event.newEndTime)
       }).subscribe({
         error: (error) => {
-          console.error('Error resizing appointment:', error);
+          devError('Error resizing appointment:', error);
           this.snackBar.open('Failed to resize appointment', 'Dismiss', { duration: 3000 });
         }
       });

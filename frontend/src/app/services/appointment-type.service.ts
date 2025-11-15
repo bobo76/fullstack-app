@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { AppointmentType } from '../models/appointment-type.model';
 import { environment } from '../../environments/environment';
+import { devError } from '../utils/environment.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class AppointmentTypeService {
       errorMessage = `Server error (${error.status}): ${error.message}`;
     }
 
-    console.error('AppointmentTypeService error:', errorMessage);
+    devError('AppointmentTypeService error:', errorMessage);
     return throwError(() => error);
   }
 }

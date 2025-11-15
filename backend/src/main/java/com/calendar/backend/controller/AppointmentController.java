@@ -23,7 +23,6 @@ import java.util.List;
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -61,7 +60,7 @@ public class AppointmentController {
     @PatchMapping("/{id}")
     public ResponseEntity<AppointmentResponse> updateAppointment(
             @PathVariable Long id,
-            @RequestBody AppointmentPatchRequest request) {
+            @Valid @RequestBody AppointmentPatchRequest request) {
         log.debug("PATCH /api/appointments/{}", id);
         AppointmentResponse appointment = appointmentService.updateAppointment(id, request);
         return ResponseEntity.ok(appointment);

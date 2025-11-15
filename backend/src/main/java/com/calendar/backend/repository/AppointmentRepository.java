@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    @Query("SELECT a FROM Appointment a WHERE a.startTime >= :start AND a.endTime <= :end ORDER BY a.startTime")
+    @Query("SELECT a FROM Appointment a WHERE a.startTime < :end AND a.endTime > :start ORDER BY a.startTime")
     List<Appointment> findByDateRange(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
     @Query("SELECT COUNT(a) > 0 FROM Appointment a WHERE a.appointmentType.id = :typeId")

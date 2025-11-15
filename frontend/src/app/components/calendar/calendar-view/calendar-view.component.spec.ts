@@ -223,7 +223,7 @@ describe('CalendarViewComponent', () => {
     expect(component.selectedAppointment()).toBeNull();
   });
 
-  it('should reload appointments after saving', async () => {
+  it('should close drawer after saving without reloading (WebSocket handles updates)', async () => {
     const { fixture, appointmentService } = await setup();
     const component = fixture.componentInstance;
 
@@ -231,8 +231,11 @@ describe('CalendarViewComponent', () => {
 
     component.onAppointmentSaved();
 
-    expect(appointmentService.getAll).toHaveBeenCalled();
+    // Should NOT call getAll - WebSocket updates handle this
+    expect(appointmentService.getAll).not.toHaveBeenCalled();
     expect(component.drawerOpen()).toBe(false);
+    expect(component.selectedAppointment()).toBeNull();
+    expect(component.isNewAppointment()).toBe(false);
   });
 
   it('should render week view by default', async () => {

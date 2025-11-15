@@ -5,6 +5,7 @@ import { AppointmentEvent } from '../models/appointment.model';
 import { ReminderNotification } from '../models/reminder.model';
 import { environment } from '../../environments/environment';
 import { AppointmentService } from './appointment.service';
+import { devLog, devError, isTestEnvironment } from '../utils/environment.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -20,38 +21,38 @@ export class WebSocketService implements OnDestroy {
 
   connect(): void {
     if (this.connected) {
-      console.log('WebSocket already connected');
+      devLog('WebSocket already connected');
       return;
     }
 
-    console.log('Connecting to WebSocket at', environment.wsUrl);
+    devLog('Connecting to WebSocket at', environment.wsUrl);
 
     this.stompClient = new Client({
       brokerURL: environment.wsUrl,
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      debug: (str) => {
-        console.log('STOMP Debug:', str);
+      debug: (environment.production || isTestEnvironment()) ? undefined : (str) => {
+        devLog('STOMP Debug:', str);
       },
       onConnect: () => {
-        console.log('WebSocket connected successfully');
+        devLog('WebSocket connected successfully');
         this.connected = true;
         this.subscribeToTopics();
       },
       onDisconnect: () => {
-        console.log('WebSocket disconnected');
+        devLog('WebSocket disconnected');
         this.connected = false;
       },
       onStompError: (frame) => {
-        console.error('STOMP error:', frame.headers['message']);
-        console.error('Error details:', frame.body);
+        devError('STOMP error:', frame.headers['message']);
+        devError('Error details:', frame.body);
       },
       onWebSocketError: (event) => {
-        console.error('WebSocket error:', event);
+        devError('WebSocket error:', event);
       },
       onWebSocketClose: (event) => {
-        console.log('WebSocket closed:', event.code, event.reason);
+        devLog('WebSocket closed:', event.code, event.reason);
       },
     });
 
@@ -60,42 +61,42 @@ export class WebSocketService implements OnDestroy {
 
   private subscribeToTopics(): void {
     if (!this.stompClient) {
-      console.error('Cannot subscribe: STOMP client is null');
+      devError('Cannot subscribe: STOMP client is null');
       return;
     }
 
-    console.log('Subscribing to WebSocket topics...');
+    devLog('Subscribing to WebSocket topics...');
 
     // Subscribe to appointment updates
     this.appointmentSubscription = this.stompClient.subscribe(
       '/topic/appointments',
       (message) => {
-        console.log('Received appointment event:', message.body);
+        devLog('Received appointment event:', message.body);
         try {
           const event: AppointmentEvent = JSON.parse(message.body);
           this.appointmentEventsSubject.next(event);
           this.handleAppointmentEvent(event);
         } catch (error) {
-          console.error('Error parsing appointment event:', error);
+          devError('Error parsing appointment event:', error);
         }
       }
     );
-    console.log('Subscribed to /topic/appointments');
+    devLog('Subscribed to /topic/appointments');
 
     // Subscribe to user-specific reminders
     this.reminderSubscription = this.stompClient.subscribe(
       '/user/queue/reminders',
       (message) => {
-        console.log('Received reminder:', message.body);
+        devLog('Received reminder:', message.body);
         try {
           const reminder: ReminderNotification = JSON.parse(message.body);
           this.reminderSubject.next(reminder);
         } catch (error) {
-          console.error('Error parsing reminder:', error);
+          devError('Error parsing reminder:', error);
         }
       }
     );
-    console.log('Subscribed to /user/queue/reminders');
+    devLog('Subscribed to /user/queue/reminders');
   }
 
   private handleAppointmentEvent(event: AppointmentEvent): void {

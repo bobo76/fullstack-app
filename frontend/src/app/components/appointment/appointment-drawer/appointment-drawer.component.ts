@@ -8,6 +8,7 @@ import { AppointmentFormComponent } from '../appointment-form/appointment-form.c
 import { Appointment } from '../../../models/appointment.model';
 import { AppointmentType } from '../../../models/appointment-type.model';
 import { AppointmentService } from '../../../services/appointment.service';
+import { devError } from '../../../utils/environment.utils';
 
 @Component({
   selector: 'app-appointment-drawer',
@@ -45,7 +46,7 @@ export class AppointmentDrawerComponent {
           this.save.emit();
         },
         error: (error) => {
-          console.error('Error creating appointment:', error);
+          devError('Error creating appointment:', error);
           this.snackBar.open('Failed to create appointment', 'Dismiss', { duration: 3000 });
         }
       });
@@ -65,7 +66,7 @@ export class AppointmentDrawerComponent {
           this.save.emit();
         },
         error: (error) => {
-          console.error('Error updating appointment:', error);
+          devError('Error updating appointment:', error);
           this.snackBar.open('Failed to update appointment', 'Dismiss', { duration: 3000 });
         }
       });
@@ -81,7 +82,7 @@ export class AppointmentDrawerComponent {
             this.save.emit();
           },
           error: (error) => {
-            console.error('Error deleting appointment:', error);
+            devError('Error deleting appointment:', error);
             this.snackBar.open('Failed to delete appointment', 'Dismiss', { duration: 3000 });
           }
         });

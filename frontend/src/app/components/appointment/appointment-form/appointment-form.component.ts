@@ -25,6 +25,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { Appointment } from '../../../models/appointment.model';
 import { AppointmentType } from '../../../models/appointment-type.model';
 import { Instant } from '../../../models/instant.type';
+import { toInstant, parseInstant } from '../../../utils/date.utils';
 
 @Component({
   selector: 'app-appointment-form',
@@ -68,10 +69,10 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
 
   private initForm(): void {
     const startTime = this.appointment?.startTime
-      ? this.parseInstant(this.appointment.startTime)
+      ? parseInstant(this.appointment.startTime)
       : new Date();
     const endTime = this.appointment?.endTime
-      ? this.parseInstant(this.appointment.endTime)
+      ? parseInstant(this.appointment.endTime)
       : new Date(startTime.getTime() + 3600000);
 
     // Select first appointment type as default if none is specified
@@ -94,22 +95,10 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
     });
   }
 
-  private parseInstant(instantStr: Instant): Date {
-    // Parse ISO 8601 UTC timestamp (Instant) to local Date object
-    // Instant format: "2025-11-13T23:35:00Z" or "2025-11-13T23:35:00.000Z"
-    return new Date(instantStr);
-  }
-
   private formatTimeForInput(date: Date): string {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
-  }
-
-  private toInstant(date: Date): Instant {
-    // Format Date to ISO 8601 UTC timestamp (Instant)
-    // Output format: "2025-11-13T18:35:00Z"
-    return date.toISOString().split('.')[0] + 'Z';
   }
 
   onSubmit(): void {
@@ -118,18 +107,32 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
 
       const startDate = new Date(formValue.startDate);
       const [startHours, startMinutes] = formValue.startTime.split(':');
-      startDate.setHours(parseInt(startHours), parseInt(startMinutes), 0, 0);
+      const startHourNum = parseInt(startHours, 10);
+      const startMinuteNum = parseInt(startMinutes, 10);
+
+      if (isNaN(startHourNum) || isNaN(startMinuteNum)) {
+        console.error('Invalid start time format');
+        return;
+      }
+      startDate.setHours(startHourNum, startMinuteNum, 0, 0);
 
       const endDate = new Date(formValue.endDate);
       const [endHours, endMinutes] = formValue.endTime.split(':');
-      endDate.setHours(parseInt(endHours), parseInt(endMinutes), 0, 0);
+      const endHourNum = parseInt(endHours, 10);
+      const endMinuteNum = parseInt(endMinutes, 10);
+
+      if (isNaN(endHourNum) || isNaN(endMinuteNum)) {
+        console.error('Invalid end time format');
+        return;
+      }
+      endDate.setHours(endHourNum, endMinuteNum, 0, 0);
 
       const appointment: Appointment = {
         ...this.appointment,
         title: formValue.title,
         description: formValue.description,
-        startTime: this.toInstant(startDate),
-        endTime: this.toInstant(endDate),
+        startTime: toInstant(startDate),
+        endTime: toInstant(endDate),
         appointmentTypeId: formValue.appointmentTypeId,
         reminderMinutes: formValue.reminderMinutes,
       };

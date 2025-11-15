@@ -3,6 +3,12 @@ import '@testing-library/jest-dom';
 
 setupZoneTestEnv();
 
+// Set test flag for environment
+declare global {
+  var IS_TEST_ENV: boolean;
+}
+global.IS_TEST_ENV = true;
+
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

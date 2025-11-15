@@ -4,6 +4,7 @@ import { Observable, tap, catchError, throwError } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { Instant } from '../models/instant.type';
 import { environment } from '../../environments/environment';
+import { devError } from '../utils/environment.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +73,7 @@ export class AppointmentService {
       errorMessage = `Server error (${error.status}): ${error.message}`;
     }
 
-    console.error('AppointmentService error:', errorMessage);
+    devError('AppointmentService error:', errorMessage);
     return throwError(() => error);
   }
 

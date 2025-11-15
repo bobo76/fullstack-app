@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/api/appointment-types")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
 public class AppointmentTypeController {
 
     private final AppointmentTypeService appointmentTypeService;

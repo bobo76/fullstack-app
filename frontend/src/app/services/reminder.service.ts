@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { ReminderNotification } from '../models/reminder.model';
 import { WebSocketService } from './websocket.service';
+import { devError } from '../utils/environment.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class ReminderService implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reminder) => this.showReminder(reminder),
-        error: (error) => console.error('Error receiving reminder:', error)
+        error: (error) => devError('Error receiving reminder:', error)
       });
   }
 
