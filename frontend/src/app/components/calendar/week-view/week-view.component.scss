@@ -1,0 +1,86 @@
+.week-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.week-header {
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  border-bottom: 2px solid #e0e0e0;
+  background: #f5f5f5;
+}
+
+.time-column-header {
+  border-right: 1px solid #e0e0e0;
+}
+
+.day-header {
+  padding: 16px 8px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+  border-right: 1px solid #e0e0e0;
+  color: #666;
+
+  &.today {
+    background: #e3f2fd;
+    color: #1976d2;
+    font-weight: 600;
+  }
+}
+
+.week-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 80px repeat(7, 1fr);
+  overflow-y: auto;
+}
+
+.time-column {
+  border-right: 1px solid #e0e0e0;
+  background: #fafafa;
+}
+
+.time-label {
+  height: 60px;
+  padding: 8px;
+  font-size: 12px;
+  color: #666;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: right;
+}
+
+.day-column {
+  position: relative;
+  border-right: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.time-slot {
+  height: 60px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.appointments-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+
+  app-appointment-card {
+    pointer-events: auto;
+  }
+}

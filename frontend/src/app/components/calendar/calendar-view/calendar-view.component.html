@@ -1,0 +1,62 @@
+<mat-toolbar color="primary">
+  <span>Calendar Application</span>
+  <span class="spacer"></span>
+
+  <button mat-button (click)="today()">
+    <mat-icon>today</mat-icon>
+    Today
+  </button>
+
+  <button mat-icon-button (click)="previousPeriod()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span class="period-label">{{ getCurrentPeriodLabel() }}</span>
+
+  <button mat-icon-button (click)="nextPeriod()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+
+  <mat-button-toggle-group
+    [value]="viewMode()"
+    (change)="onViewModeChange($event.value)"
+    class="view-toggle">
+    <mat-button-toggle value="week">Week</mat-button-toggle>
+    <mat-button-toggle value="day">Day</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-toolbar>
+
+<mat-sidenav-container class="calendar-container">
+  <mat-sidenav-content>
+    @if (viewMode() === 'week') {
+      <app-week-view
+        [currentDate]="currentDate()"
+        [appointments]="appointmentService.appointments()"
+        (timeSlotClick)="onTimeSlotClick($event)"
+        (appointmentClick)="onAppointmentClick($event)">
+      </app-week-view>
+    } @else {
+      <app-day-view
+        [currentDate]="currentDate()"
+        [appointments]="appointmentService.appointments()"
+        (timeSlotClick)="onTimeSlotClick($event)"
+        (appointmentClick)="onAppointmentClick($event)">
+      </app-day-view>
+    }
+  </mat-sidenav-content>
+
+  <mat-sidenav
+    position="end"
+    [opened]="drawerOpen()"
+    (closed)="onDrawerClose()"
+    mode="over"
+    class="appointment-drawer">
+    <app-appointment-drawer
+      [appointment]="selectedAppointment()"
+      [appointmentTypes]="appointmentTypes()"
+      [isNew]="isNewAppointment()"
+      (close)="onDrawerClose()"
+      (save)="onAppointmentSaved()">
+    </app-appointment-drawer>
+  </mat-sidenav>
+</mat-sidenav-container>

@@ -1,0 +1,8 @@
+<div class="time-grid">
+  @for (hour of hours; track hour) {
+    <div class="time-slot" (click)="onSlotClick(hour)">
+      <div class="time-label">{{ formatHour(hour) }}</div>
+      <div class="slot-content"></div>
+    </div>
+  }
+</div>

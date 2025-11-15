@@ -1,0 +1,26 @@
+<mat-card
+  class="appointment-card"
+  cdkDrag
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Appointment: ' + appointment.title + ' from ' + formatTime(appointment.startTime) + ' to ' + formatTime(appointment.endTime)"
+  [style.top.px]="position.top"
+  [style.height.px]="position.height"
+  [style.background-color]="getBackgroundColor()"
+  (click)="onClick($event)"
+  (keydown.enter)="onClick($event)"
+  (keydown.space)="onClick($event)">
+  <mat-card-content>
+    <div class="appointment-title">{{ appointment.title }}</div>
+    <div class="appointment-time">
+      {{ formatTime(appointment.startTime) }} - {{ formatTime(appointment.endTime) }}
+    </div>
+  </mat-card-content>
+
+  <div
+    class="resize-handle resize-handle-bottom"
+    role="button"
+    tabindex="0"
+    aria-label="Resize appointment"
+    (mousedown)="onResizeStart($event)"></div>
+</mat-card>

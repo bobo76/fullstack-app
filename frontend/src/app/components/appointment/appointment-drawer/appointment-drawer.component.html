@@ -1,0 +1,28 @@
+<div class="drawer-header">
+  <h2>{{ isNew ? 'New Appointment' : 'Edit Appointment' }}</h2>
+  <button mat-icon-button (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="drawer-content">
+  <app-appointment-form
+    [appointment]="appointment"
+    [appointmentTypes]="appointmentTypes"
+    [isNew]="isNew"
+    (save)="onSave($event)"
+    (cancel)="onCancel()">
+  </app-appointment-form>
+
+  @if (!isNew) {
+    <mat-divider></mat-divider>
+    <div class="delete-section">
+      <button mat-stroked-button color="warn" (click)="onDelete()">
+        <mat-icon>delete</mat-icon>
+        Delete Appointment
+      </button>
+    </div>
+  }
+</div>

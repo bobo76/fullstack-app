@@ -1,0 +1,28 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.period-label {
+  margin: 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.view-toggle {
+  margin-left: 16px;
+}
+
+.calendar-container {
+  height: calc(100vh - 64px);
+}
+
+.appointment-drawer {
+  width: 400px;
+  max-width: 90vw;
+}
+
+mat-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

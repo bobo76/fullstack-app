@@ -1,0 +1,29 @@
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: #f5f5f5;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+.drawer-content {
+  height: calc(100% - 65px);
+  overflow-y: auto;
+}
+
+.delete-section {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+}

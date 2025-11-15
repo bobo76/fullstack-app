@@ -1,0 +1,78 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="appointment-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" required>
+    @if (form.get('title')?.hasError('required') && form.get('title')?.touched) {
+      <mat-error>Title is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+  </mat-form-field>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start Time</mat-label>
+      <input matInput type="time" formControlName="startTime" required>
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>End Time</mat-label>
+      <input matInput type="time" formControlName="endTime" required>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Appointment Type</mat-label>
+    <mat-select formControlName="appointmentTypeId" required>
+      @for (type of appointmentTypes; track type.id) {
+        <mat-option [value]="type.id">
+          <span [style.color]="type.color">●</span> {{ type.name }}
+        </mat-option>
+      }
+    </mat-select>
+    @if (form.get('appointmentTypeId')?.hasError('required') && form.get('appointmentTypeId')?.touched) {
+      <mat-error>Appointment type is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Reminder</mat-label>
+    <mat-select formControlName="reminderMinutes" required>
+      @for (option of reminderOptions; track option) {
+        <mat-option [value]="option">
+          @if (option === 0) {
+            No reminder
+          } @else {
+            {{ option }} minutes before
+          }
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+      {{ isNew ? 'Create' : 'Save' }}
+    </button>
+  </div>
+</form>

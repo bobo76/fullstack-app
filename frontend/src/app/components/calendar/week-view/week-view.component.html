@@ -1,0 +1,37 @@
+<div class="week-view">
+  <div class="week-header">
+    <div class="time-column-header"></div>
+    @for (day of getWeekDays(); track day.getTime()) {
+      <div class="day-header" [class.today]="isToday(day)">
+        {{ formatDayHeader(day) }}
+      </div>
+    }
+  </div>
+
+  <div class="week-content">
+    <div class="time-column">
+      @for (hour of hours; track hour) {
+        <div class="time-label">{{ formatHour(hour) }}</div>
+      }
+    </div>
+
+    @for (day of getWeekDays(); track day.getTime()) {
+      <div class="day-column" cdkDropList (cdkDropListDropped)="onAppointmentDrop($event, day)">
+        @for (hour of hours; track hour) {
+          <div class="time-slot" (click)="onTimeSlotClick(day, hour)"></div>
+        }
+
+        <div class="appointments-overlay">
+          @for (appointment of getDayAppointments(day); track appointment.id) {
+            <app-appointment-card
+              [appointment]="appointment"
+              [position]="getAppointmentPosition(appointment)"
+              (appointmentClick)="onAppointmentClick($event)"
+              (appointmentResize)="onAppointmentResize($event)">
+            </app-appointment-card>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
