@@ -2,31 +2,33 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #FFFFFF;
 }
 
 .week-header {
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
-  border-bottom: 2px solid #e0e0e0;
-  background: #f5f5f5;
+  border-bottom: 1px solid #E0E0E0;
+  background: #FAFAFA;
 }
 
 .time-column-header {
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #E0E0E0;
+  background: #FFFFFF;
 }
 
 .day-header {
-  padding: 16px 8px;
+  padding: 12px 8px;
   text-align: center;
-  font-weight: 500;
-  font-size: 14px;
-  border-right: 1px solid #e0e0e0;
-  color: #666;
+  font-weight: 600;
+  font-size: 13px;
+  border-right: 1px solid #E0E0E0;
+  color: #32363A;
+  background: #FFFFFF;
 
   &.today {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: #E3F2FD;
+    color: #0070F2;
     font-weight: 600;
   }
 }
@@ -39,22 +41,24 @@
 }
 
 .time-column {
-  border-right: 1px solid #e0e0e0;
-  background: #fafafa;
+  border-right: 1px solid #E0E0E0;
+  background: #FAFAFA;
 }
 
 .time-label {
   height: 60px;
   padding: 8px;
-  font-size: 12px;
-  color: #666;
-  border-bottom: 1px solid #e0e0e0;
+  font-size: 11px;
+  color: #6A6D70;
+  border-bottom: 1px solid #F0F0F0;
   text-align: right;
+  font-weight: 400;
 }
 
 .day-column {
   position: relative;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #F0F0F0;
+  background: #FFFFFF;
 
   &:last-child {
     border-right: none;
@@ -63,12 +67,12 @@
 
 .time-slot {
   height: 60px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #F0F0F0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #F8F9FA;
   }
 }
 

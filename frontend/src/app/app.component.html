@@ -1,3 +1,11 @@
-<app-calendar-view></app-calendar-view>
+<div class="app-container">
+  <app-sidebar (viewChange)="onViewChange($event)"></app-sidebar>
 
-
+  <main class="main-content">
+    @if (currentView() === 'calendar') {
+      <app-calendar-view></app-calendar-view>
+    } @else if (currentView() === 'appointment-types') {
+      <app-appointment-type-list></app-appointment-type-list>
+    }
+  </main>
+</div>

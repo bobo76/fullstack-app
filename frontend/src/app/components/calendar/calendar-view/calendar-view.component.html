@@ -1,19 +1,19 @@
-<mat-toolbar color="primary">
-  <span>Calendar Application</span>
+<mat-toolbar class="app-toolbar">
+  <span class="app-title">Calendar Application</span>
   <span class="spacer"></span>
 
-  <button mat-button (click)="today()">
+  <button mat-button (click)="today()" class="toolbar-button">
     <mat-icon>today</mat-icon>
     Today
   </button>
 
-  <button mat-icon-button (click)="previousPeriod()">
+  <button mat-icon-button (click)="previousPeriod()" class="toolbar-icon-button">
     <mat-icon>chevron_left</mat-icon>
   </button>
 
   <span class="period-label">{{ getCurrentPeriodLabel() }}</span>
 
-  <button mat-icon-button (click)="nextPeriod()">
+  <button mat-icon-button (click)="nextPeriod()" class="toolbar-icon-button">
     <mat-icon>chevron_right</mat-icon>
   </button>
 
@@ -21,7 +21,10 @@
     [value]="viewMode()"
     (change)="onViewModeChange($event.value)"
     class="view-toggle">
-    <mat-button-toggle value="week">Week</mat-button-toggle>
+    <mat-button-toggle value="week">
+      <mat-icon>check</mat-icon>
+      Week
+    </mat-button-toggle>
     <mat-button-toggle value="day">Day</mat-button-toggle>
   </mat-button-toggle-group>
 </mat-toolbar>

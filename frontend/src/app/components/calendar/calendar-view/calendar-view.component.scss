@@ -1,28 +1,89 @@
+.app-toolbar {
+  background-color: #FFFFFF !important;
+  color: #32363A !important;
+  border-bottom: 1px solid #E0E0E0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #32363A;
+  letter-spacing: 0.2px;
+}
+
 .spacer {
   flex: 1 1 auto;
 }
 
+.toolbar-button {
+  color: #32363A !important;
+
+  mat-icon {
+    margin-right: 4px;
+  }
+}
+
+.toolbar-icon-button {
+  color: #32363A !important;
+}
+
 .period-label {
-  margin: 0 16px;
-  font-size: 16px;
+  margin: 0 8px;
+  font-size: 15px;
   font-weight: 500;
+  color: #32363A;
+  min-width: 200px;
+  text-align: center;
 }
 
 .view-toggle {
   margin-left: 16px;
+  box-shadow: none;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  overflow: hidden;
+
+  ::ng-deep .mat-button-toggle {
+    border: none;
+
+    &.mat-button-toggle-checked {
+      background-color: #0070F2;
+      color: white;
+
+      .mat-button-toggle-label-content {
+        line-height: 36px;
+      }
+    }
+
+    .mat-button-toggle-label-content {
+      padding: 0 16px;
+      line-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+    }
+  }
 }
 
 .calendar-container {
   height: calc(100vh - 64px);
+  background-color: #FAFAFA;
 }
 
 .appointment-drawer {
-  width: 400px;
+  width: 450px;
   max-width: 90vw;
-}
-
-mat-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }

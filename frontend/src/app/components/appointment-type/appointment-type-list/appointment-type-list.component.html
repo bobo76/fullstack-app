@@ -1,0 +1,67 @@
+<div class="appointment-types-container">
+  <div class="header">
+    <h1>Appointment Types</h1>
+    <button mat-raised-button color="primary" (click)="onAddNew()">
+      <mat-icon>add</mat-icon>
+      Add New Type
+    </button>
+  </div>
+
+  <div class="table-container">
+    @if (loading()) {
+      <div class="loading-state">
+        <mat-spinner></mat-spinner>
+        <p>Loading appointment types...</p>
+      </div>
+    } @else {
+      <table mat-table [dataSource]="appointmentTypes()" class="appointment-types-table">
+        <!-- Color Column -->
+        <ng-container matColumnDef="color">
+          <th mat-header-cell *matHeaderCellDef>Color</th>
+          <td mat-cell *matCellDef="let type">
+            <div class="color-preview" [style.background-color]="type.color"></div>
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let type">{{ type.name }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let type">
+            <button mat-icon-button (click)="onEdit(type)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      @if (appointmentTypes().length === 0 && !loading()) {
+        <div class="empty-state">
+          <mat-icon>category</mat-icon>
+          <p>No appointment types found</p>
+          <button mat-raised-button color="primary" (click)="onAddNew()">
+            Add Your First Type
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>
+
+<!-- Drawer -->
+@if (drawerOpen() && selectedAppointmentType()) {
+  <app-appointment-type-drawer
+    [appointmentType]="selectedAppointmentType()!"
+    [isNew]="isNew()"
+    (close)="onDrawerClose()"
+    (save)="onDrawerSave()">
+  </app-appointment-type-drawer>
+}

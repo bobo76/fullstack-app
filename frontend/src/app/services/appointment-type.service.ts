@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import { AppointmentType } from '../models/appointment-type.model';
 import { environment } from '../../environments/environment';
 import { devError } from '../utils/environment.utils';
@@ -12,8 +12,12 @@ export class AppointmentTypeService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/appointment-types`;
 
+  private appointmentTypesSignal = signal<AppointmentType[]>([]);
+  appointmentTypes = this.appointmentTypesSignal.asReadonly();
+
   getAll(): Observable<AppointmentType[]> {
     return this.http.get<AppointmentType[]>(this.apiUrl).pipe(
+      tap(types => this.appointmentTypesSignal.set(types)),
       catchError(this.handleError)
     );
   }
@@ -26,18 +30,23 @@ export class AppointmentTypeService {
 
   create(appointmentType: AppointmentType): Observable<AppointmentType> {
     return this.http.post<AppointmentType>(this.apiUrl, appointmentType).pipe(
+      tap(newType => this.appointmentTypesSignal.update(types => [...types, newType])),
       catchError(this.handleError)
     );
   }
 
   update(id: number, updates: Partial<AppointmentType>): Observable<AppointmentType> {
     return this.http.patch<AppointmentType>(`${this.apiUrl}/${id}`, updates).pipe(
+      tap(updatedType => this.appointmentTypesSignal.update(types =>
+        types.map(type => type.id === id ? updatedType : type)
+      )),
       catchError(this.handleError)
     );
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.appointmentTypesSignal.update(types => types.filter(type => type.id !== id))),
       catchError(this.handleError)
     );
   }

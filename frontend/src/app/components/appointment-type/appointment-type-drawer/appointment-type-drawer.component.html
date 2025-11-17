@@ -1,0 +1,28 @@
+<div class="drawer-backdrop" (click)="onCancel()"></div>
+
+<div class="drawer" (click)="$event.stopPropagation()">
+  <div class="drawer-header">
+    <h2>{{ isNew() ? 'New Appointment Type' : 'Edit Appointment Type' }}</h2>
+    <button mat-icon-button (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="drawer-content">
+    <app-appointment-type-form
+      [appointmentType]="appointmentType()"
+      [isNew]="isNew()"
+      (save)="onSave($event)"
+      (cancel)="onCancel()">
+    </app-appointment-type-form>
+  </div>
+
+  @if (!isNew()) {
+    <div class="drawer-footer">
+      <button mat-button color="warn" (click)="onDelete()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    </div>
+  }
+</div>
