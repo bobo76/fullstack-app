@@ -43,6 +43,9 @@ class AppointmentServiceTest {
     @Mock
     private AppointmentWebSocketController webSocketController;
 
+    @Mock
+    private AppointmentTitleService appointmentTitleService;
+
     @InjectMocks
     private AppointmentService appointmentService;
 

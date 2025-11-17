@@ -62,6 +62,13 @@ export class AppointmentService {
     );
   }
 
+  titleAutoComplete(query: string): Observable<string[]> {
+    const params = new HttpParams().set('query', query);
+    return this.http.get<string[]>(`${this.apiUrl}/autocomplete`, { params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred';
 

@@ -32,6 +32,7 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentTypeRepository appointmentTypeRepository;
     private final AppointmentWebSocketController webSocketController;
+    private final AppointmentTitleService appointmentTitleService;
 
     private static final Set<Integer> VALID_REMINDER_MINUTES = Set.of(0, 5, 10, 15, 30);
     private static final Integer DEFAULT_REMINDER_MINUTES = 15;
@@ -116,6 +117,9 @@ public class AppointmentService {
         Appointment savedAppointment = appointmentRepository.save(appointment);
         log.info("Created appointment with id: {}", savedAppointment.getId());
 
+        // Track title usage for autocomplete
+        appointmentTitleService.trackTitleUsage(savedAppointment.getTitle());
+
         AppointmentResponse response = AppointmentResponse.from(savedAppointment);
         webSocketController.broadcastAppointmentCreated(response);
 
@@ -172,6 +176,11 @@ public class AppointmentService {
 
         Appointment updatedAppointment = appointmentRepository.save(appointment);
         log.info("Updated appointment with id: {}", updatedAppointment.getId());
+
+        // Track title usage if title was updated
+        if (request.title() != null) {
+            appointmentTitleService.trackTitleUsage(updatedAppointment.getTitle());
+        }
 
         AppointmentResponse response = AppointmentResponse.from(updatedAppointment);
         webSocketController.broadcastAppointmentUpdated(response);

@@ -17,8 +17,8 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-    @Value("${cors.allowed-origins}")
-    private String allowedOrigins;
+//    @Value("${cors.allowed-origins}")
+    private String allowedOrigins = "http://localhost:4200,http://localhost:4201";
 
     @Bean
     public CorsFilter corsFilter() {
@@ -28,7 +28,7 @@ public class CorsConfig {
         corsConfiguration.setAllowedOrigins(origins);
 
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setMaxAge(3600L);
 

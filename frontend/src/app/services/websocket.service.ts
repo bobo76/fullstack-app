@@ -5,7 +5,11 @@ import { AppointmentEvent } from '../models/appointment.model';
 import { ReminderNotification } from '../models/reminder.model';
 import { environment } from '../../environments/environment';
 import { AppointmentService } from './appointment.service';
-import { devLog, devError, isTestEnvironment } from '../utils/environment.utils';
+import {
+  devLog,
+  devError,
+  isTestEnvironment,
+} from '../utils/environment.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -32,9 +36,12 @@ export class WebSocketService implements OnDestroy {
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      debug: (environment.production || isTestEnvironment()) ? undefined : (str) => {
-        devLog('STOMP Debug:', str);
-      },
+      debug:
+        environment.production || isTestEnvironment()
+          ? undefined
+          : (str) => {
+              devLog('STOMP Debug:', str);
+            },
       onConnect: () => {
         devLog('WebSocket connected successfully');
         this.connected = true;
@@ -56,7 +63,7 @@ export class WebSocketService implements OnDestroy {
       },
     });
 
-    this.stompClient.activate();
+    // this.stompClient.activate();
   }
 
   private subscribeToTopics(): void {

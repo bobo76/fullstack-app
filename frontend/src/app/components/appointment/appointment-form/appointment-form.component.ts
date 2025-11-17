@@ -5,6 +5,7 @@ import {
   EventEmitter,
   OnInit,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   inject,
   ChangeDetectionStrategy,
@@ -22,10 +23,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Appointment } from '../../../models/appointment.model';
 import { AppointmentType } from '../../../models/appointment-type.model';
 import { Instant } from '../../../models/instant.type';
 import { toInstant, parseInstant } from '../../../utils/date.utils';
+import { AppointmentService } from '../../../services/appointment.service';
+import { debounceTime, distinctUntilChanged, switchMap, of, tap, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-appointment-form',
@@ -39,12 +43,13 @@ import { toInstant, parseInstant } from '../../../utils/date.utils';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './appointment-form.component.html',
   styleUrls: ['./appointment-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppointmentFormComponent implements OnInit, OnChanges {
+export class AppointmentFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() appointment: Appointment | null = null;
   @Input() appointmentTypes: AppointmentType[] = [];
   @Input() isNew = false;
@@ -52,9 +57,12 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
+  private appointmentService = inject(AppointmentService);
+  private autocompleteSubscription?: Subscription;
 
   form!: FormGroup;
   reminderOptions = [0, 5, 10, 15, 30];
+  titleSuggestions: string[] = [];
 
   ngOnInit(): void {
     this.initForm();
@@ -67,6 +75,34 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    // Cleanup subscription to prevent memory leaks
+    this.autocompleteSubscription?.unsubscribe();
+  }
+
+  private setupTitleAutocomplete(): void {
+    // Unsubscribe from previous subscription if it exists
+    this.autocompleteSubscription?.unsubscribe();
+
+    this.autocompleteSubscription = this.form
+      .get('title')
+      ?.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((value) => {
+          console.log('Autocomplete for:', value);
+          if (typeof value === 'string' && value.trim().length > 0) {
+            return this.appointmentService.titleAutoComplete(value);
+          }
+          return of([]);
+        })
+      )
+      .subscribe((suggestions) => {
+        console.log('Suggestions received:', suggestions);
+        this.titleSuggestions = suggestions;
+      });
+  }
+
   private initForm(): void {
     const startTime = this.appointment?.startTime
       ? parseInstant(this.appointment.startTime)
@@ -76,9 +112,13 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
       : new Date(startTime.getTime() + 3600000);
 
     // Select first appointment type as default if none is specified
-    const defaultTypeId = this.appointment?.appointmentTypeId ||
+    const defaultTypeId =
+      this.appointment?.appointmentTypeId ||
       this.appointment?.appointmentType?.id ||
       (this.appointmentTypes.length > 0 ? this.appointmentTypes[0].id : null);
+
+    // Clear previous autocomplete suggestions
+    this.titleSuggestions = [];
 
     this.form = this.fb.group({
       title: [this.appointment?.title || '', Validators.required],
@@ -93,6 +133,9 @@ export class AppointmentFormComponent implements OnInit, OnChanges {
         Validators.required,
       ],
     });
+
+    // Setup autocomplete after form is created
+    this.setupTitleAutocomplete();
   }
 
   private formatTimeForInput(date: Date): string {

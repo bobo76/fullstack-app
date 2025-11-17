@@ -1,6 +1,8 @@
 import { render, screen, within } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AppointmentFormComponent } from './appointment-form.component';
 import { Appointment } from '../../../models/appointment.model';
 
@@ -24,6 +26,10 @@ describe('AppointmentFormComponent', () => {
     const user = userEvent.setup();
     const result = await render(AppointmentFormComponent, {
       imports: [BrowserAnimationsModule],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ],
       componentInputs: {
         isNew,
         appointment,

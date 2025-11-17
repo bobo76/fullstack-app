@@ -79,14 +79,24 @@ This is a Calendar Application backend - a full-stack appointment management sys
 
 ## Testing & Verification
 
-- **Always build** after code changes: `mvn clean install`
-- Run unit tests after logic changes: `mvn test`
-- Add unit tests (JUnit 5) for new service logic automatically
-- Use Mockito for mocking in tests
-- Only report task complete after successful build
+### Required Workflow (DO NOT SKIP):
+1. Make code changes
+2. **Immediately run full build**: `mvn clean install` (NOT just `mvn test`)
+3. If build fails, fix all errors before proceeding
+4. Only report task complete after successful `mvn clean install` & `mvn test` pass 
+
+### Testing Standards:
+- Add unit tests (JUnit 5) for new service/controller logic automatically
+- Use Mockito for mocking in tests (@Mock, @MockBean)
+- When tests fail, find root cause before fixing
 - Test API endpoints with Swagger UI when available
 - Verify Spring Boot application starts successfully on port 8080
 - Test WebSocket connections manually or with integration tests
+
+### Important Notes:
+- `mvn clean install` runs tests AND builds the JAR - this is required
+- `mvn test` alone is NOT sufficient - always use `mvn clean install`
+- Complete all code edits first, THEN run build (batch edits, then verify)
 
 ## Backend Error Handling
 
