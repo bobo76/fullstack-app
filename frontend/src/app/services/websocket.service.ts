@@ -20,7 +20,6 @@ export class WebSocketService implements OnDestroy {
   private appointmentEventsSubject = new Subject<AppointmentEvent>();
   private reminderSubject = new Subject<ReminderNotification>();
   private connected = false;
-  private appointmentSubscription: StompSubscription | null = null;
   private reminderSubscription: StompSubscription | null = null;
 
   connect(): void {
@@ -74,22 +73,6 @@ export class WebSocketService implements OnDestroy {
 
     devLog('Subscribing to WebSocket topics...');
 
-    // Subscribe to appointment updates
-    this.appointmentSubscription = this.stompClient.subscribe(
-      '/topic/appointments',
-      (message) => {
-        devLog('Received appointment event:', message.body);
-        try {
-          const event: AppointmentEvent = JSON.parse(message.body);
-          this.appointmentEventsSubject.next(event);
-          this.handleAppointmentEvent(event);
-        } catch (error) {
-          devError('Error parsing appointment event:', error);
-        }
-      }
-    );
-    devLog('Subscribed to /topic/appointments');
-
     // Subscribe to user-specific reminders
     this.reminderSubscription = this.stompClient.subscribe(
       '/user/queue/reminders',
@@ -106,22 +89,6 @@ export class WebSocketService implements OnDestroy {
     devLog('Subscribed to /user/queue/reminders');
   }
 
-  private handleAppointmentEvent(event: AppointmentEvent): void {
-    switch (event.eventType) {
-      case 'CREATED':
-        this.appointmentService.addAppointment(event.appointment);
-        break;
-      case 'UPDATED':
-        this.appointmentService.updateAppointment(event.appointment);
-        break;
-      case 'DELETED':
-        if (event.appointment.id) {
-          this.appointmentService.removeAppointment(event.appointment.id);
-        }
-        break;
-    }
-  }
-
   getAppointmentEvents(): Observable<AppointmentEvent> {
     return this.appointmentEventsSubject.asObservable();
   }
@@ -131,11 +98,6 @@ export class WebSocketService implements OnDestroy {
   }
 
   disconnect(): void {
-    if (this.appointmentSubscription) {
-      this.appointmentSubscription.unsubscribe();
-      this.appointmentSubscription = null;
-    }
-
     if (this.reminderSubscription) {
       this.reminderSubscription.unsubscribe();
       this.reminderSubscription = null;

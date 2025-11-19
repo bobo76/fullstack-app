@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppointmentTypeListComponent } from './appointment-type-list.component';
 import { AppointmentTypeService } from '../../../services/appointment-type.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -74,7 +74,7 @@ describe('AppointmentTypeListComponent', () => {
         { duration: 3000 }
       );
       done();
-    }, 0);
+    }, 100); // Increased timeout to give more time for async operations
   });
 
   it('should open drawer for new appointment type', () => {

@@ -1,0 +1,184 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <h1>Settings</h1>
+    <button mat-stroked-button color="warn" (click)="resetToDefaults()">
+      <mat-icon>restore</mat-icon>
+      Reset to Defaults
+    </button>
+  </div>
+
+  <!-- Display Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>display_settings</mat-icon>
+      <mat-card-title>Display Settings</mat-card-title>
+      <mat-card-subtitle>Customize how the calendar looks</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Dark Mode Toggle -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>dark_mode</mat-icon>
+          <div>
+            <div class="label-text">Dark Mode</div>
+            <div class="label-description">Enable dark theme for reduced eye strain</div>
+          </div>
+        </div>
+        <mat-slide-toggle
+          [checked]="settingsService.themeMode() === 'dark'"
+          (change)="onThemeToggle($event.checked)"
+          color="primary"
+          aria-label="Toggle dark mode">
+        </mat-slide-toggle>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Week Start Day -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>event</mat-icon>
+          <div>
+            <div class="label-text">Week Start Day</div>
+            <div class="label-description">First day of the week in calendar view</div>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="setting-select">
+          <mat-select
+            [value]="settingsService.weekStartDay()"
+            (selectionChange)="onWeekStartDayChange($event.value)">
+            <mat-option value="sunday">Sunday</mat-option>
+            <mat-option value="monday">Monday</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Time Format -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>schedule</mat-icon>
+          <div>
+            <div class="label-text">Time Format</div>
+            <div class="label-description">12-hour or 24-hour time display</div>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="setting-select">
+          <mat-select
+            [value]="settingsService.timeFormat()"
+            (selectionChange)="onTimeFormatChange($event.value)">
+            <mat-option value="12h">12-hour (2:30 PM)</mat-option>
+            <mat-option value="24h">24-hour (14:30)</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Default View -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>view_week</mat-icon>
+          <div>
+            <div class="label-text">Default Calendar View</div>
+            <div class="label-description">Initial view when opening calendar</div>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="setting-select">
+          <mat-select
+            [value]="settingsService.defaultView()"
+            (selectionChange)="onDefaultViewChange($event.value)">
+            <mat-option value="day">Day</mat-option>
+            <mat-option value="week">Week</mat-option>
+            <mat-option value="month">Month</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Appointment Defaults -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>event_available</mat-icon>
+      <mat-card-title>Appointment Defaults</mat-card-title>
+      <mat-card-subtitle>Default values for new appointments</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Default Duration -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>timer</mat-icon>
+          <div>
+            <div class="label-text">Default Duration</div>
+            <div class="label-description">Default length for new appointments</div>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="setting-select">
+          <mat-select
+            [value]="settingsService.defaultDuration()"
+            (selectionChange)="onDefaultDurationChange($event.value)">
+            @for (option of durationOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Default Reminder -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>notifications</mat-icon>
+          <div>
+            <div class="label-text">Default Reminder</div>
+            <div class="label-description">Default reminder time for new appointments</div>
+          </div>
+        </div>
+        <mat-form-field appearance="outline" class="setting-select">
+          <mat-select
+            [value]="settingsService.defaultReminderMinutes()"
+            (selectionChange)="onDefaultReminderChange($event.value)">
+            @for (option of reminderOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Work Hours -->
+      <div class="setting-row">
+        <div class="setting-label">
+          <mat-icon>work</mat-icon>
+          <div>
+            <div class="label-text">Work Hours</div>
+            <div class="label-description">Highlight work hours in calendar view</div>
+          </div>
+        </div>
+        <div class="time-range">
+          <mat-form-field appearance="outline" class="time-input">
+            <mat-label>Start</mat-label>
+            <input
+              matInput
+              type="time"
+              [value]="settingsService.workHoursStart()"
+              (change)="onWorkHoursStartChange($event)">
+          </mat-form-field>
+          <span class="time-separator">to</span>
+          <mat-form-field appearance="outline" class="time-input">
+            <mat-label>End</mat-label>
+            <input
+              matInput
+              type="time"
+              [value]="settingsService.workHoursEnd()"
+              (change)="onWorkHoursEndChange($event)">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

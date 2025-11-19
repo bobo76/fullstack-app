@@ -26,10 +26,11 @@ describe('SidebarComponent', () => {
     expect(component.activeView()).toBe('calendar');
   });
 
-  it('should have two menu items', () => {
-    expect(component.menuItems.length).toBe(2);
+  it('should have three menu items', () => {
+    expect(component.menuItems.length).toBe(3);
     expect(component.menuItems[0].id).toBe('calendar');
     expect(component.menuItems[1].id).toBe('appointment-types');
+    expect(component.menuItems[2].id).toBe('settings');
   });
 
   it('should update active view when selectView is called', () => {

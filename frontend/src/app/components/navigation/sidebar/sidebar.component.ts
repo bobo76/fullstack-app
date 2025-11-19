@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 
-export type ViewType = 'calendar' | 'appointment-types';
+export type ViewType = 'calendar' | 'appointment-types' | 'settings';
 
 interface MenuItem {
   id: ViewType;
@@ -26,7 +26,8 @@ export class SidebarComponent {
 
   menuItems: MenuItem[] = [
     { id: 'calendar', label: 'Calendar', icon: 'calendar_month' },
-    { id: 'appointment-types', label: 'Appointment Types', icon: 'category' }
+    { id: 'appointment-types', label: 'Appointment Types', icon: 'category' },
+    { id: 'settings', label: 'Settings', icon: 'settings' }
   ];
 
   selectView(viewId: ViewType): void {

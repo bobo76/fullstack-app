@@ -11,6 +11,14 @@ $text-primary: #32363A;
 $text-secondary: #6A6D70;
 $white: #FFFFFF;
 
+// Dark theme color palette
+$dark-bg-primary: #1e1e1e;
+$dark-bg-secondary: #2d2d2d;
+$dark-bg-tertiary: #383838;
+$dark-border: #424242;
+$dark-text-primary: #e0e0e0;
+$dark-text-secondary: #b0b0b0;
+
 html, body {
   height: 100%;
   margin: 0;
@@ -18,6 +26,7 @@ html, body {
   font-family: '72', 'Segoe UI', Roboto, "Helvetica Neue", sans-serif;
   color: $text-primary;
   background-color: $lighter-gray;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
@@ -87,4 +96,599 @@ html, body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #B1B1B1;
+}
+
+// Dark Theme Styles
+body.dark-theme {
+  background-color: $dark-bg-primary !important;
+  color: $dark-text-primary !important;
+
+  // App container
+  .app-container {
+    background-color: $dark-bg-primary;
+    color: $dark-text-primary;
+  }
+
+  .main-content {
+    background-color: $dark-bg-primary;
+  }
+
+  // Material components
+  .mat-mdc-card {
+    background-color: $dark-bg-secondary;
+    color: $dark-text-primary;
+  }
+
+  .mat-drawer-container {
+    background-color: $dark-bg-primary !important;
+    color: $dark-text-primary;
+  }
+
+  .mat-drawer {
+    background-color: $dark-bg-secondary;
+    border-right: 1px solid $dark-border;
+  }
+
+  .mat-toolbar.mat-primary {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+    border-bottom: 1px solid $dark-border;
+  }
+
+  // Form fields
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: $dark-bg-tertiary !important;
+    }
+
+    .mat-mdc-floating-label {
+      color: $dark-text-secondary !important;
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      background-color: $dark-bg-secondary !important;
+    }
+
+    .mat-mdc-form-field-hint-wrapper,
+    .mat-mdc-form-field-error-wrapper {
+      background-color: $dark-bg-secondary !important;
+    }
+  }
+
+  .mat-mdc-form-field-bottom-align::before {
+    background-color: transparent !important;
+  }
+
+  // Labels
+  mat-label {
+    color: $dark-text-secondary !important;
+  }
+
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  .mat-mdc-input-element {
+    color: $dark-text-primary !important;
+    caret-color: $dark-text-primary !important;
+  }
+
+  input[type="time"] {
+    color: $dark-text-primary !important;
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  .mat-mdc-select {
+    color: $dark-text-primary !important;
+  }
+
+  .mat-mdc-select-value {
+    color: $dark-text-primary !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: $dark-text-secondary !important;
+  }
+
+  .mat-mdc-option {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+
+    &:hover {
+      background-color: $dark-bg-tertiary !important;
+    }
+  }
+
+  // Time inputs specifically
+  .time-input input {
+    color: $dark-text-primary !important;
+  }
+
+  // Lists
+  .mat-mdc-list-item {
+    color: $dark-text-primary;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .mat-mdc-list-item-title {
+    color: $dark-text-primary;
+  }
+
+  // Buttons
+  .mat-mdc-raised-button.mat-primary {
+    --mdc-protected-button-container-color: #{$primary-blue};
+    --mdc-protected-button-label-text-color: white;
+  }
+
+  .mat-mdc-button,
+  .mat-mdc-outlined-button,
+  .mat-mdc-stroked-button {
+    color: $dark-text-primary;
+  }
+
+  // Dividers
+  .mat-divider {
+    border-top-color: $dark-border;
+  }
+
+  // Scrollbars
+  ::-webkit-scrollbar-track {
+    background: $dark-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+
+    &:hover {
+      background: #666;
+    }
+  }
+
+  // Calendar specific - Week View
+  .week-view {
+    background-color: $dark-bg-primary !important;
+  }
+
+  .week-header {
+    background-color: $dark-bg-secondary !important;
+    border-bottom-color: $dark-border !important;
+  }
+
+  .time-column-header {
+    background-color: $dark-bg-secondary !important;
+    border-right-color: $dark-border !important;
+  }
+
+  .day-header {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+    border-color: $dark-border !important;
+
+    h2 {
+      color: $dark-text-primary !important;
+    }
+
+    &.today {
+      background-color: rgba($primary-blue, 0.2) !important;
+      color: $primary-blue !important;
+    }
+  }
+
+  // Day View specific
+  .day-view {
+    background-color: $dark-bg-primary !important;
+  }
+
+  .day-content {
+    background-color: $dark-bg-primary !important;
+  }
+
+  .time-column {
+    background-color: $dark-bg-secondary !important;
+    border-right-color: $dark-border !important;
+  }
+
+  .time-label {
+    color: $dark-text-secondary !important;
+    border-bottom-color: $dark-border !important;
+  }
+
+  .day-column {
+    background-color: $dark-bg-primary !important;
+    border-right-color: $dark-border !important;
+  }
+
+  .time-slot {
+    border-bottom-color: $dark-border !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+  }
+
+  .calendar-grid {
+    background-color: $dark-bg-secondary;
+    border-color: $dark-border;
+  }
+
+  .hour-label {
+    color: $dark-text-secondary;
+  }
+
+  // Appointment cards
+  .appointment-card {
+    background-color: $dark-bg-tertiary;
+    border-color: $dark-border;
+  }
+
+  // Sidebar
+  .sidebar {
+    background-color: $dark-bg-secondary !important;
+    border-right-color: $dark-border !important;
+  }
+
+  .sidebar-header {
+    color: $dark-text-primary !important;
+    border-bottom-color: $dark-border !important;
+
+    h2 {
+      color: $dark-text-primary !important;
+    }
+
+    .app-icon {
+      color: $primary-blue !important;
+    }
+  }
+
+  .nav-item {
+    color: $dark-text-primary !important;
+
+    mat-icon {
+      color: $dark-text-secondary !important;
+    }
+
+    span {
+      color: $dark-text-primary !important;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    &.active {
+      background-color: rgba($primary-blue, 0.3) !important;
+
+      mat-icon {
+        color: $primary-blue !important;
+      }
+
+      span {
+        color: $primary-blue !important;
+      }
+    }
+  }
+
+  // Settings page
+  .settings-card {
+    background-color: $dark-bg-secondary;
+  }
+
+  .settings-container {
+    background-color: $dark-bg-primary;
+    color: $dark-text-primary;
+  }
+
+  .mat-mdc-card-title,
+  .mat-mdc-card-subtitle,
+  .mat-mdc-card-content {
+    color: $dark-text-primary;
+  }
+
+  .mat-mdc-card-subtitle {
+    color: $dark-text-secondary;
+  }
+
+  // Page titles and headers
+  h1, h2, h3, h4, h5, h6 {
+    color: $dark-text-primary !important;
+  }
+
+  // Appointment type list
+  .appointment-types-container {
+    background-color: $dark-bg-primary !important;
+    color: $dark-text-primary !important;
+
+    .header h1 {
+      color: $dark-text-primary !important;
+    }
+  }
+
+  .table-container {
+    background-color: $dark-bg-secondary !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .appointment-types-table {
+    th {
+      background-color: $dark-bg-tertiary !important;
+      color: $dark-text-primary !important;
+      border-bottom: 2px solid $dark-border !important;
+    }
+
+    td {
+      color: $dark-text-primary !important;
+      border-color: $dark-border !important;
+    }
+
+    tr {
+      background-color: $dark-bg-secondary !important;
+      border-color: $dark-border !important;
+
+      &:hover {
+        background-color: $dark-bg-tertiary !important;
+      }
+    }
+
+    .color-preview {
+      border-color: $dark-border !important;
+    }
+  }
+
+  .empty-state, .loading-state {
+    p {
+      color: $dark-text-secondary !important;
+    }
+
+    mat-icon {
+      color: $dark-text-secondary !important;
+    }
+  }
+
+  // Tables (generic)
+  table {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+  }
+
+  thead {
+    background-color: $dark-bg-tertiary !important;
+    color: $dark-text-primary !important;
+  }
+
+  th {
+    color: $dark-text-primary !important;
+    border-color: $dark-border !important;
+  }
+
+  td {
+    color: $dark-text-primary !important;
+    border-color: $dark-border !important;
+  }
+
+  tbody tr {
+    background-color: $dark-bg-secondary !important;
+
+    &:hover {
+      background-color: $dark-bg-tertiary !important;
+    }
+  }
+
+  // Calendar view
+  .calendar-container {
+    background-color: $dark-bg-primary !important;
+  }
+
+  .calendar-header {
+    background-color: $dark-bg-primary !important;
+    color: $dark-text-primary !important;
+
+    h1 {
+      color: $dark-text-primary !important;
+    }
+  }
+
+  // Calendar toolbar
+  .app-toolbar {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+    border-bottom-color: $dark-border !important;
+  }
+
+  .app-title {
+    color: $dark-text-primary !important;
+  }
+
+  .toolbar-button {
+    color: $dark-text-primary !important;
+  }
+
+  .toolbar-icon-button {
+    color: $dark-text-primary !important;
+  }
+
+  .period-label {
+    color: $dark-text-primary !important;
+  }
+
+  // View toggle buttons
+  .view-toggle {
+    border-color: $dark-border !important;
+  }
+
+  .mat-button-toggle-group {
+    background-color: $dark-bg-tertiary !important;
+    border-color: $dark-border !important;
+  }
+
+  .mat-button-toggle {
+    color: $dark-text-primary !important;
+    background-color: $dark-bg-tertiary !important;
+    border-color: $dark-border !important;
+  }
+
+  .mat-button-toggle-checked {
+    background-color: $primary-blue !important;
+    color: white !important;
+  }
+
+  .mdc-button {
+    color: $dark-text-primary !important;
+  }
+
+  // Material dialogs
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: #{$dark-bg-secondary};
+    background-color: $dark-bg-secondary !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    background-color: $dark-bg-secondary !important;
+  }
+
+  .mat-mdc-dialog-title,
+  .mdc-dialog__title {
+    color: $dark-text-primary !important;
+    background-color: $dark-bg-secondary !important;
+  }
+
+  .mat-mdc-dialog-content {
+    color: $dark-text-primary !important;
+  }
+
+  // Dialog header area
+  h2[mat-dialog-title],
+  [mat-dialog-title],
+  .mat-mdc-dialog-title h2,
+  .mdc-dialog__title h2 {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+  }
+
+  // Dialog title text nodes
+  .mat-mdc-dialog-container .mat-mdc-dialog-title {
+    background-color: $dark-bg-secondary !important;
+  }
+
+  // Appointment form
+  .appointment-form {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+
+    .mat-mdc-text-field-wrapper {
+      background-color: $dark-bg-tertiary !important;
+    }
+  }
+
+  .form-actions {
+    border-top-color: $dark-border !important;
+  }
+
+  // Date and time inputs
+  input[type="date"],
+  input[type="datetime-local"] {
+    color: $dark-text-primary !important;
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  // Textarea
+  textarea {
+    color: $dark-text-primary !important;
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  // Datepicker
+  .mat-datepicker-content {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+  }
+
+  .mat-calendar {
+    background-color: $dark-bg-secondary !important;
+    color: $dark-text-primary !important;
+  }
+
+  .mat-calendar-header {
+    background-color: $dark-bg-tertiary !important;
+  }
+
+  .mat-calendar-body-label,
+  .mat-calendar-table-header th {
+    color: $dark-text-primary !important;
+  }
+
+  .mat-calendar-body-cell-content {
+    color: $dark-text-primary !important;
+    background-color: transparent !important;
+  }
+
+  .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .mat-calendar-body-selected {
+    background-color: $primary-blue !important;
+    color: white !important;
+  }
+
+  // Autocomplete
+  .mat-mdc-autocomplete-panel {
+    background-color: $dark-bg-secondary !important;
+  }
+
+  // Datepicker toggle
+  .mat-datepicker-toggle {
+    color: $dark-text-secondary !important;
+  }
+
+  // Appointment drawer
+  .drawer-header {
+    background-color: $dark-bg-secondary !important;
+    border-bottom-color: $dark-border !important;
+
+    h2 {
+      color: $dark-text-primary !important;
+    }
+
+    button {
+      color: $dark-text-secondary !important;
+    }
+  }
+
+  .drawer-content {
+    background-color: $dark-bg-primary !important;
+
+    .info-section {
+      background-color: $dark-bg-secondary !important;
+      border-top-color: $dark-border !important;
+
+      .info-label {
+        color: $dark-text-secondary !important;
+      }
+
+      .info-value {
+        color: $dark-text-primary !important;
+      }
+    }
+
+    .section-header {
+      background-color: $dark-bg-primary !important;
+      color: $dark-text-secondary !important;
+    }
+  }
+
+  .delete-section {
+    background-color: $dark-bg-secondary !important;
+    border-top-color: $dark-border !important;
+  }
 }
