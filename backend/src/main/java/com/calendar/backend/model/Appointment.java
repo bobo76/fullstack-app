@@ -42,7 +42,7 @@ public class Appointment {
     private LocalDateTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_type_id", nullable = true)
+    @JoinColumn(name = "appointment_type_id")
     private AppointmentType appointmentType;
 
     @Column(nullable = false)

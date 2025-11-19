@@ -38,9 +38,9 @@ public class AppointmentWebSocketController {
     public void handleAppointmentDelete(@Payload Long id) {
         log.debug("Broadcasting appointment deletion: {}", id);
         // Create a minimal response with just the ID for deletion
-        AppointmentResponse deletedAppointment = new AppointmentResponse(
-                id, null, null, null, null, null, null, null, null
-        );
+        AppointmentResponse deletedAppointment = AppointmentResponse.builder()
+                .id(id)
+                .build();
         AppointmentEvent event = AppointmentEvent.deleted(deletedAppointment);
         messagingTemplate.convertAndSend("/topic/appointments", event);
     }
@@ -59,9 +59,9 @@ public class AppointmentWebSocketController {
 
     public void broadcastAppointmentDeleted(Long id) {
         log.debug("Broadcasting appointment deleted: {}", id);
-        AppointmentResponse deletedAppointment = new AppointmentResponse(
-                id, null, null, null, null, null, null, null, null
-        );
+        AppointmentResponse deletedAppointment = AppointmentResponse.builder()
+                .id(id)
+                .build();
         AppointmentEvent event = AppointmentEvent.deleted(deletedAppointment);
         messagingTemplate.convertAndSend("/topic/appointments", event);
     }

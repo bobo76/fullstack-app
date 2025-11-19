@@ -1,9 +1,11 @@
 package com.calendar.backend.dto;
 
 import com.calendar.backend.model.AppointmentType;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
+@Builder
 public record AppointmentTypeResponse(
         Long id,
         String name,

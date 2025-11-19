@@ -1,10 +1,16 @@
-import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppointmentCardComponent } from '../appointment-card/appointment-card.component';
 import { Appointment } from '../../../models/appointment.model';
-import { Instant } from '../../../models/instant.type';
 import { AppointmentService } from '../../../services/appointment.service';
 import { toInstant } from '../../../utils/date.utils';
 import { devError } from '../../../utils/environment.utils';
@@ -15,7 +21,7 @@ import { devError } from '../../../utils/environment.utils';
   imports: [CommonModule, CdkDropList, AppointmentCardComponent],
   templateUrl: './week-view.component.html',
   styleUrls: ['./week-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeekViewComponent {
   @Input() currentDate!: Date;
@@ -48,19 +54,24 @@ export class WeekViewComponent {
   }
 
   getDayAppointments(day: Date): Appointment[] {
-    return this.appointments.filter(apt => {
+    return this.appointments.filter((apt) => {
       const aptDate = new Date(apt.startTime);
       return this.isSameDay(aptDate, day);
     });
   }
 
   private isSameDay(date1: Date, date2: Date): boolean {
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate();
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   }
 
-  getAppointmentPosition(appointment: Appointment): { top: number; height: number } {
+  getAppointmentPosition(appointment: Appointment): {
+    top: number;
+    height: number;
+  } {
     const start = new Date(appointment.startTime);
     const end = new Date(appointment.endTime);
 
@@ -70,7 +81,7 @@ export class WeekViewComponent {
 
     return {
       top: startMinutes,
-      height: duration
+      height: duration,
     };
   }
 
@@ -86,7 +97,8 @@ export class WeekViewComponent {
 
   onAppointmentDrop(event: CdkDragDrop<Appointment[]>, day: Date): void {
     const dropY = event.dropPoint.y;
-    const containerTop = event.container.element.nativeElement.getBoundingClientRect().top;
+    const containerTop =
+      event.container.element.nativeElement.getBoundingClientRect().top;
     const relativeY = dropY - containerTop;
     const minutes = Math.round(relativeY);
 
@@ -100,28 +112,39 @@ export class WeekViewComponent {
     const newEndTime = new Date(newStartTime.getTime() + duration);
 
     if (appointment.id) {
-      this.appointmentService.update(appointment.id, {
-        startTime: toInstant(newStartTime),
-        endTime: toInstant(newEndTime)
-      }).subscribe({
-        error: (error) => {
-          devError('Error updating appointment:', error);
-          this.snackBar.open('Failed to move appointment', 'Dismiss', { duration: 3000 });
-        }
-      });
+      this.appointmentService
+        .update(appointment.id, {
+          startTime: toInstant(newStartTime),
+          endTime: toInstant(newEndTime),
+        })
+        .subscribe({
+          error: (error) => {
+            devError('Error updating appointment:', error);
+            this.snackBar.open('Failed to move appointment', 'Dismiss', {
+              duration: 3000,
+            });
+          },
+        });
     }
   }
 
-  onAppointmentResize(event: { appointment: Appointment; newEndTime: Date }): void {
+  onAppointmentResize(event: {
+    appointment: Appointment;
+    newEndTime: Date;
+  }): void {
     if (event.appointment.id) {
-      this.appointmentService.update(event.appointment.id, {
-        endTime: toInstant(event.newEndTime)
-      }).subscribe({
-        error: (error) => {
-          devError('Error resizing appointment:', error);
-          this.snackBar.open('Failed to resize appointment', 'Dismiss', { duration: 3000 });
-        }
-      });
+      this.appointmentService
+        .update(event.appointment.id, {
+          endTime: toInstant(event.newEndTime),
+        })
+        .subscribe({
+          error: (error) => {
+            devError('Error resizing appointment:', error);
+            this.snackBar.open('Failed to resize appointment', 'Dismiss', {
+              duration: 3000,
+            });
+          },
+        });
     }
   }
 
@@ -132,7 +155,11 @@ export class WeekViewComponent {
   }
 
   formatDayHeader(day: Date): string {
-    return day.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
+    return day.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'numeric',
+      day: 'numeric',
+    });
   }
 
   isToday(day: Date): boolean {

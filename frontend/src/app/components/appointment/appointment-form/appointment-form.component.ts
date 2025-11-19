@@ -26,10 +26,16 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Appointment } from '../../../models/appointment.model';
 import { AppointmentType } from '../../../models/appointment-type.model';
-import { Instant } from '../../../models/instant.type';
 import { toInstant, parseInstant } from '../../../utils/date.utils';
 import { AppointmentService } from '../../../services/appointment.service';
-import { debounceTime, distinctUntilChanged, switchMap, of, tap, Subscription } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+  of,
+  tap,
+  Subscription,
+} from 'rxjs';
 
 @Component({
   selector: 'app-appointment-form',
